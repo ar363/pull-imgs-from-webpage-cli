@@ -1,6 +1,7 @@
 import os
 import requests
 from bs4 import BeautifulSoup
+import typer
 
 def dlimg(url, folder, filename):
     
@@ -15,10 +16,13 @@ def dlimg(url, folder, filename):
     print(f'finished downloading {filename}')
     
 
-def dlpage(url, to):
+def dlpage(url: str, to: str = "./dl"):
+    """
+    Download all images from a webpage
+    """
     print(f'\n\nnow downloading all images from {url}')
 
-    soup = BeautifulSoup(requests.get(url).text)
+    soup = BeautifulSoup(requests.get(url).text, 'html.parser')
     imgl = [i['src'] for i in soup.find_all('img')]
 
     for i, img in enumerate(imgl):
@@ -27,13 +31,5 @@ def dlpage(url, to):
     print(f'\nfinished downloading all images in {url}')
 
 
-
-
-def main():
-    # TODO: Make a CLI
-    return    
-    
-
 if __name__ == '__main__':
-    main()
-
+    typer.run(dlpage)
